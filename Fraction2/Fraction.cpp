@@ -1,38 +1,134 @@
 #include <iostream>
+#include <numeric>
 
 class Fraction
 {
 	int re_, im_;
 public:	
-	Fraction(int re, int im) { re_ = re; im_ = im; }
-	Fraction  operator+(Fraction  other)
-	{
-		return Fraction(re_ + other.re_, im_ + other.im_);
-	}
-	Fraction  operator+(int other) { return Fraction(re_ + other, im_); }
-	Fraction  operator-(Fraction  other)
-	{
-		return Fraction(re_ - other.re_, im_ - other.im_);
-	}
-	Fraction  operator-(int other) { return Fraction(re_ - other, im_); }
 
-	Fraction  operator*(Fraction  other)
-	{
-		return Fraction(re_ * other.re_, im_ * other.im_);
+	Fraction(int re, int im) {
+		re_ = re; im_ = im;
 	}
-	Fraction  operator*(int other) { return Fraction(re_ * other, im_); }
 
-	Fraction  operator /(Fraction  other)
+	Fraction operator + (Fraction  other)
 	{
-		return Fraction(re_ / other.re_, im_ / other.im_);
+		int result = this->im_ * other.im_;		
+		int result1 = this->re_ * other.im_;
+		int result2 = other.re_ * this->im_;
+		return Fraction(result1 + result2, result);
 	}
-	Fraction  operator/(int other) { return Fraction(re_ / other, im_); }
+
+	Fraction operator - (Fraction  other)
+	{
+		int result = this->im_ * other.im_;
+		int result1 = this->re_ * other.im_;
+		int result2 = other.re_ * this->im_;
+		return Fraction(result1 - result2, result);
+	}	
+
+	Fraction operator * (Fraction  other)
+	{
+		int numeratorThis=0, denominatorThis=0;
+		int numeratorOther=0, denominatorOther=0;
+		int result=0,result1=0;		
+
+		int gcd = std::gcd(this->re_, other.im_);
+		int gcd1 = std::gcd(this->im_, other.re_);
+
+		if (gcd != 1) {
+			numeratorThis = this->re_ / gcd;
+			denominatorOther = other.im_ / gcd;
+		}
+		else {
+			numeratorThis = this->re_;
+			denominatorOther = other.im_;
+		}
+
+		if (gcd1 != 1) {
+			numeratorOther = other.re_ / gcd1;
+			denominatorThis = this->im_ / gcd1;
+		}
+		else {
+			numeratorOther = other.re_;
+			denominatorThis = this->im_;
+		}
+
+		result = numeratorThis * numeratorOther;
+		result1 = denominatorThis * denominatorOther;
+
+		return Fraction(result, result1);
+	}
+	
+	Fraction operator / (Fraction  other)
+	{
+		int numeratorThis=0, denominatorThis=0;
+		int numeratorOther=0, denominatorOther=0;
+		int result = 0, result1 = 0;
+
+		int gcd = std::gcd(this->re_, this->im_);
+		int gcd1 = std::gcd(other.im_, other.re_);
+
+		if (gcd != 1) {		
+			denominatorThis = this->im_ / gcd;
+			numeratorThis = this->re_ / gcd;
+		}
+		else {
+			denominatorThis = this->im_;
+			numeratorThis = this->re_;
+		}
+
+		if (gcd1 != 1) {
+			numeratorOther = other.re_ / gcd1;
+			denominatorOther = other.im_ / gcd1;
+		}
+		else {
+			numeratorOther = other.re_;
+			denominatorOther = other.im_;
+		}
+
+		result = numeratorThis * denominatorOther;
+		result1 = denominatorThis * numeratorOther;
+
+		return Fraction(result, result1);
+	}	
+
+	Fraction operator++ ()
+	{
+		int a = this->re_;
+		++a;
+		this->re_ = this->re_ + a;
+
+		return *this;
+	}
+
+	Fraction operator-- ()
+	{
+		this->im_--;
+
+		return *this;
+	}
+	
+	int getIm(int a) {
+		return im_=a;
+	}
+
+	int getImP() {
+		return im_;
+	}
+
+	int getRe() {
+		return re_;
+	}
+
+	int getReP(int a) {
+		return re_=a;
+	}
 
 	void Print() { std::cout << re_ << "/" << im_ << std::endl; }
 };
 
 int main()
-{
+{	
 	setlocale(LC_ALL, "Russian");
 	
 	int a, b, c, d;
@@ -48,10 +144,10 @@ int main()
 	 
 	Fraction  f1(a, b);
 	Fraction  f2(c, d);
-	Fraction  f3 = f1 + f2;
+	Fraction  f3=f1+f2;
 
 	std::cout << a << "/" << b << " + " << c << "/" << d << " = ";
-	f3.Print();
+	f3.Print();	
 	f3 = f1 - f2;
 	std::cout << a << "/" << b << " - " << c << "/" << d << " = ";
 	f3.Print();
@@ -59,19 +155,28 @@ int main()
 	std::cout << a << "/" << b << " * " << c << "/" << d << " = ";
 	f3.Print();
 	f3 = f1 / f2;
-	std::cout << a << "/" << b << " / " << c << "/" << d << " = ";
-	f3.Print();
-	++a;
+	std::cout << a << "/" << b << " / " << c << "/" << d << " = ";	
+	f3.Print();	
+	++f1;
 	f3 = f1 * f2;
 	std::cout << "++" << a << "/" << b << " * " << c << "/" << d << " = ";
 	f3.Print();
 	std::cout << "Значение дроби 1 = ";
+	int as = f3.getImP();
+	f1.getIm(as);
+	f3.getIm(b);
 	f3.Print();
-	b--;
+	int startA=a,startB=b;
+	a = f1.getRe();
+	--f1;
 	f3 = f1 * f2;
 	std::cout << a << "/" << b << "-- * " << c << "/" << d << " = ";
 	f3.Print();
 	std::cout << "Значение дроби 1 = ";
+	f1.getReP(startA);
+	f3.getReP(startA);
+	f1.getIm(startB);
+	f3.getIm(startB);
 	f3.Print();
 	
 	return 0;
