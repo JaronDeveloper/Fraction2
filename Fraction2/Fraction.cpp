@@ -15,6 +15,7 @@ public:
 		int result = this->im_ * other.im_;		
 		int result1 = this->re_ * other.im_;
 		int result2 = other.re_ * this->im_;
+
 		return Fraction(result1 + result2, result);
 	}
 
@@ -23,6 +24,7 @@ public:
 		int result = this->im_ * other.im_;
 		int result1 = this->re_ * other.im_;
 		int result2 = other.re_ * this->im_;
+
 		return Fraction(result1 - result2, result);
 	}	
 
@@ -93,17 +95,24 @@ public:
 	}	
 
 	Fraction operator++ ()
-	{
-		int a = this->re_;
-		++a;
-		this->re_ = this->re_ + a;
+	{	
+		/*
+		if (this->re_ != this->im_) {
+		this->re_ = this->re_ + this->im_;
+		}
+		else {
+			this->re_ = 2;
+		}
+		*/
+		this->re_ = this->re_ + this->im_;
 
 		return *this;
 	}
 
 	Fraction operator-- ()
-	{
-		this->im_--;
+	{		
+		
+		this->re_ = this->re_ - this->im_;
 
 		return *this;
 	}
@@ -162,22 +171,14 @@ int main()
 	std::cout << "++" << a << "/" << b << " * " << c << "/" << d << " = ";
 	f3.Print();
 	std::cout << "Значение дроби 1 = ";
-	int as = f3.getImP();
-	f1.getIm(as);
-	f3.getIm(b);
-	f3.Print();
-	int startA=a,startB=b;
-	a = f1.getRe();
-	--f1;
+	f1.Print();
+	a = f1.getRe();	
 	f3 = f1 * f2;
 	std::cout << a << "/" << b << "-- * " << c << "/" << d << " = ";
 	f3.Print();
 	std::cout << "Значение дроби 1 = ";
-	f1.getReP(startA);
-	f3.getReP(startA);
-	f1.getIm(startB);
-	f3.getIm(startB);
-	f3.Print();
+	--f1;
+	f1.Print();
 	
 	return 0;
 }
