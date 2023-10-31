@@ -94,7 +94,7 @@ public:
 		return Fraction(result, result1);
 	}	
 
-	Fraction operator++ ()
+	Fraction operator++ (int)
 	{	
 		/*
 		if (this->re_ != this->im_) {
@@ -109,21 +109,13 @@ public:
 		return *this;
 	}
 
-	Fraction operator-- ()
+	Fraction operator-- (int)
 	{		
 		
 		this->re_ = this->re_ - this->im_;
 
 		return *this;
-	}
-	
-	int getIm(int a) {
-		return im_=a;
-	}
-
-	int getImP() {
-		return im_;
-	}
+	}	
 
 	int getRe() {
 		return re_;
