@@ -94,24 +94,15 @@ public:
 		return Fraction(result, result1);
 	}	
 
-	Fraction operator++ (int)
-	{	
-		/*
-		if (this->re_ != this->im_) {
-		this->re_ = this->re_ + this->im_;
-		}
-		else {
-			this->re_ = 2;
-		}
-		*/
+	Fraction operator++ ()
+	{			
 		this->re_ = this->re_ + this->im_;
 
 		return *this;
 	}
 
-	Fraction operator-- (int)
-	{		
-		
+	Fraction operator-- ()
+	{				
 		this->re_ = this->re_ - this->im_;
 
 		return *this;
