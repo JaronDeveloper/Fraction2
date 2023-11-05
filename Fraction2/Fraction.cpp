@@ -101,7 +101,7 @@ public:
 		return *this;
 	}
 
-	Fraction operator-- ()
+	Fraction operator-- (int)
 	{				
 		this->re_ = this->re_ - this->im_;
 
@@ -160,7 +160,7 @@ int main()
 	std::cout << a << "/" << b << "-- * " << c << "/" << d << " = ";
 	f3.Print();
 	std::cout << "Значение дроби 1 = ";
-	--f1;
+	f1--;
 	f1.Print();
 	
 	return 0;
